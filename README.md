@@ -12,7 +12,8 @@ Backend service built with Node.js, Express, TypeScript, PostgreSQL, Prisma, Soc
   - Comprehensive seed data populated (7 users, 4 clients, 4 projects, 24 tasks, 13 activity logs, 4 notifications).
 - **Phase 2**:
   - Auth module implemented: `POST /api/auth/login`, `POST /api/auth/register`, `POST /api/auth/refresh`, `POST /api/auth/logout`.
-  - JWT Access Token (15m TTL) in JSON payload + Refresh Token (7d TTL) in httpOnly, Secure, SameSite=Strict cookie.
+  - JWT Access Token (15m TTL) in JSON payload + Refresh Token (7d TTL) in httpOnly, Secure, SameSite=None (prod) / SameSite=Lax (dev) cookie.
+  - Robust `POST /api/auth/logout`: Executes without mandatory access token so expired or missing sessions can always completely invalidate the refresh cookie immediately (`maxAge: 0`, `expires: new Date(0)`).
   - `auth` middleware (verifies Bearer token and attaches `req.user = { id, role }`).
   - `requireRole(...roles)` middleware (enforces role guards, e.g. Admin-only registration).
   - Zod validation middleware on routes with standard `{ error: { code, message } }` error formatting.

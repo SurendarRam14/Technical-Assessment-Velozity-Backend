@@ -12,10 +12,10 @@ const router = Router();
 // Public routes
 router.post('/login', validate(loginSchema), asyncHandler(AuthController.login));
 router.post('/refresh', asyncHandler(AuthController.refresh));
+router.post('/logout', asyncHandler(AuthController.logout));
 
 // Protected routes
 router.post('/register', auth, requireRole(Role.ADMIN), validate(registerSchema), asyncHandler(AuthController.register));
-router.post('/logout', auth, asyncHandler(AuthController.logout));
 
 export const authRoutes = router;
 export default router;
