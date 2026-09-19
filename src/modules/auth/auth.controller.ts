@@ -5,13 +5,16 @@ import { CookieOptions } from 'express';
 
 const REFRESH_COOKIE_NAME = 'refreshToken';
 
-const getRefreshCookieOptions = (): CookieOptions => ({
-  httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict',
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
-  path: '/',
-});
+const getRefreshCookieOptions = (): CookieOptions => {
+  const isProd = process.env.NODE_ENV === 'production';
+  return {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+    path: '/',
+  };
+};
 
 export class AuthController {
   static async register(req: Request, res: Response) {
@@ -50,10 +53,11 @@ export class AuthController {
   }
 
   static async logout(_req: Request, res: Response) {
+    const isProd = process.env.NODE_ENV === 'production';
     res.clearCookie(REFRESH_COOKIE_NAME, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
       path: '/',
     });
 
