@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node -e \"const fs=require('fs'); require(fs.existsSync('./dist/server.js')?'./dist/server.js':'./dist/src/server.js');\"",
     "dev": "tsx watch src/server.ts",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
