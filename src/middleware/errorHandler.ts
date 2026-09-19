@@ -20,8 +20,9 @@ export const errorHandler: ErrorRequestHandler = (
   }
 
   // If it's a Zod validation error
-  if (err instanceof ZodError) {
-    const message = err.errors.map((e) => `${e.path.join('.')}: ${e.message}`).join(', ');
+  if (err instanceof ZodError || err.name === 'ZodError' || Array.isArray(err?.issues)) {
+    const issues = err.issues || err.errors || [];
+    const message = issues.map((e: any) => `${(e.path || []).join('.')}: ${e.message}`).join(', ');
     res.status(400).json({
       error: {
         code: 'VALIDATION_ERROR',

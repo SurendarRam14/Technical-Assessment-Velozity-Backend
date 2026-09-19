@@ -19,9 +19,13 @@ const isAllowedOrigin = (
   callback: (err: Error | null, allow?: boolean) => void
 ) => {
   if (!origin) return callback(null, true);
-  const clientUrl = process.env.CLIENT_URL;
+  const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+  const cleanClientUrl = clientUrl.replace(/\/$/, '');
+  const cleanOrigin = origin.replace(/\/$/, '');
+
   if (
-    (clientUrl && origin === clientUrl) ||
+    cleanOrigin === cleanClientUrl ||
+    cleanOrigin === 'http://localhost:5173' ||
     /^http:\/\/localhost:\d+$/.test(origin) ||
     /^http:\/\/127\.0\.0\.1:\d+$/.test(origin)
   ) {

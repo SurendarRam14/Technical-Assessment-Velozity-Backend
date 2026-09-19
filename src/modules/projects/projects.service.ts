@@ -99,17 +99,18 @@ export class ProjectsService {
     let assignedPmId = user.id;
 
     if (user.role === Role.ADMIN) {
-      if (input.pmId) {
-        const pmUser = await prisma.user.findUnique({
-          where: { id: input.pmId },
-        });
-        if (!pmUser || (pmUser.role !== Role.PM && pmUser.role !== Role.ADMIN)) {
-          throw ApiError.badRequest('Assigned project manager must be a valid PM or Admin');
-        }
-        assignedPmId = pmUser.id;
+      if (!input.pmId) {
+        throw ApiError.badRequest('pmId must be explicitly provided when an admin creates a project');
       }
+      const pmUser = await prisma.user.findUnique({
+        where: { id: input.pmId },
+      });
+      if (!pmUser || (pmUser.role !== Role.PM && pmUser.role !== Role.ADMIN)) {
+        throw ApiError.badRequest('Assigned project manager must be a valid PM or Admin');
+      }
+      assignedPmId = pmUser.id;
     } else if (user.role === Role.PM) {
-      // PMs can only create projects owned by themselves
+      // PMs can only create projects owned by themselves (defaults to creator)
       assignedPmId = user.id;
     }
 
