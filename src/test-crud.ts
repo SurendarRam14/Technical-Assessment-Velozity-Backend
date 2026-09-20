@@ -59,9 +59,44 @@ async function runCrudTests() {
     console.log(`   GET /api/users (Admin): ${usersRes.status}, Count: ${usersRes.data.users?.length}`);
     if (usersRes.status !== 200) throw new Error('Admin GET /api/users failed');
 
+    // Test GET /api/users with role filter (?role=DEVELOPER)
+    const devUsersRes = await request('/api/users?role=DEVELOPER', 'GET', undefined, admin.token);
+    console.log(`   GET /api/users?role=DEVELOPER: ${devUsersRes.status}, Count: ${devUsersRes.data.users?.length}`);
+    if (devUsersRes.status !== 200 || devUsersRes.data.users.some((u: any) => u.role !== 'DEVELOPER')) {
+      throw new Error('Role filtering on /api/users failed');
+    }
+
+    // Test GET /api/users with search query (?search=Alex)
+    const searchUsersRes = await request('/api/users?search=Alex', 'GET', undefined, admin.token);
+    console.log(`   GET /api/users?search=Alex: ${searchUsersRes.status}, Found: ${searchUsersRes.data.users?.map((u: any) => u.name).join(', ')}`);
+    if (searchUsersRes.status !== 200 || !searchUsersRes.data.users.some((u: any) => u.name.includes('Alex'))) {
+      throw new Error('Search filtering on /api/users failed');
+    }
+
+    // Test GET /api/users as PM -> should return 403 FORBIDDEN
+    const pmUsersRes = await request('/api/users', 'GET', undefined, pm1.token);
+    console.log(`   GET /api/users (PM1): ${pmUsersRes.status} (expected 403)`);
+    if (pmUsersRes.status !== 403) throw new Error('PM was able to access /api/users!');
+
     const clientsRes = await request('/api/clients', 'GET', undefined, admin.token);
     console.log(`   GET /api/clients (Admin): ${clientsRes.status}, Count: ${clientsRes.data.clients?.length}`);
     if (clientsRes.status !== 200 || clientsRes.data.clients.length < 4) throw new Error('Admin GET /api/clients failed');
+
+    // Test GET /api/clients as PM -> should succeed (200)
+    const pmClientsRes = await request('/api/clients', 'GET', undefined, pm1.token);
+    console.log(`   GET /api/clients (PM1): ${pmClientsRes.status}, Count: ${pmClientsRes.data.clients?.length}`);
+    if (pmClientsRes.status !== 200) throw new Error('PM GET /api/clients failed');
+
+    // Test GET /api/projects as Admin -> returns ALL projects across PMs with client and PM name
+    const adminProjects = await request('/api/projects', 'GET', undefined, admin.token);
+    console.log(`   GET /api/projects (Admin): ${adminProjects.status}, Count: ${adminProjects.data.projects?.length}`);
+    if (adminProjects.status !== 200 || adminProjects.data.projects.length < 2) {
+      throw new Error('Admin GET /api/projects failed');
+    }
+    const hasClientAndPm = adminProjects.data.projects.every(
+      (p: any) => Boolean(p.client?.name) && Boolean(p.pm?.name)
+    );
+    if (!hasClientAndPm) throw new Error('Admin GET /api/projects missing client or PM name');
 
     const newClientRes = await request(
       '/api/clients',

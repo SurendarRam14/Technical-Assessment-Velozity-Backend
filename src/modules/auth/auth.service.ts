@@ -41,9 +41,17 @@ export class AuthService {
   static async login(input: LoginInput) {
     const email = input.email.trim().toLowerCase();
 
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: { email },
     });
+
+    if (!user && email.endsWith('@projectpulse.com')) {
+      const fallbackEmail = email.replace('@projectpulse.com', '@velozity.com');
+      user = await prisma.user.findUnique({ where: { email: fallbackEmail } });
+    } else if (!user && email.endsWith('@velozity.com')) {
+      const fallbackEmail = email.replace('@velozity.com', '@projectpulse.com');
+      user = await prisma.user.findUnique({ where: { email: fallbackEmail } });
+    }
 
     if (!user) {
       throw ApiError.unauthorized('Invalid email or password', 'INVALID_CREDENTIALS');

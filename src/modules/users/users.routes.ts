@@ -7,8 +7,8 @@ import { asyncHandler } from '../../utils/asyncHandler';
 
 const router = Router();
 
-// GET /api/users - Admin, PM (team members list)
-router.get('/', auth, requireRole(Role.ADMIN, Role.PM), asyncHandler(UsersController.listUsers));
+// GET /api/users - Admin only per backend-spec.md
+router.get('/', auth, requireRole(Role.ADMIN), asyncHandler(UsersController.listUsers));
 
 export const userRoutes = router;
 export default router;

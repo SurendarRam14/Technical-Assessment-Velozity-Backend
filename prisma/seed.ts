@@ -25,7 +25,7 @@ async function main() {
   const admin = await prisma.user.create({
     data: {
       name: 'Alice Admin',
-      email: 'admin@velozity.com',
+      email: 'admin@projectpulse.com',
       passwordHash,
       role: Role.ADMIN,
     },
@@ -34,7 +34,7 @@ async function main() {
   const pm1 = await prisma.user.create({
     data: {
       name: 'Sarah Jenkins (PM)',
-      email: 'pm1@velozity.com',
+      email: 'pm1@projectpulse.com',
       passwordHash,
       role: Role.PM,
     },
@@ -43,7 +43,7 @@ async function main() {
   const pm2 = await prisma.user.create({
     data: {
       name: 'David Chen (PM)',
-      email: 'pm2@velozity.com',
+      email: 'pm2@projectpulse.com',
       passwordHash,
       role: Role.PM,
     },
@@ -52,7 +52,7 @@ async function main() {
   const dev1 = await prisma.user.create({
     data: {
       name: 'Alex Rivera (Dev)',
-      email: 'dev1@velozity.com',
+      email: 'dev1@projectpulse.com',
       passwordHash,
       role: Role.DEVELOPER,
     },
@@ -61,7 +61,7 @@ async function main() {
   const dev2 = await prisma.user.create({
     data: {
       name: 'Emma Watson (Dev)',
-      email: 'dev2@velozity.com',
+      email: 'dev2@projectpulse.com',
       passwordHash,
       role: Role.DEVELOPER,
     },
@@ -70,7 +70,7 @@ async function main() {
   const dev3 = await prisma.user.create({
     data: {
       name: 'Liam Patel (Dev)',
-      email: 'dev3@velozity.com',
+      email: 'dev3@projectpulse.com',
       passwordHash,
       role: Role.DEVELOPER,
     },
@@ -79,7 +79,7 @@ async function main() {
   const dev4 = await prisma.user.create({
     data: {
       name: 'Sophia Kim (Dev)',
-      email: 'dev4@velozity.com',
+      email: 'dev4@projectpulse.com',
       passwordHash,
       role: Role.DEVELOPER,
     },

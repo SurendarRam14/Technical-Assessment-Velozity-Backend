@@ -1,6 +1,6 @@
-# Real-Time Client Project Dashboard - Backend
+# Project Pulse - Backend
 
-Backend service built with Node.js, Express, TypeScript, PostgreSQL, Prisma, Socket.io, and node-cron.
+Real-Time Client Project Dashboard — Backend service built with Node.js, Express, TypeScript, PostgreSQL, Prisma, Socket.io, and node-cron.
 
 ## Implementation Status (Phases 1–10 Complete)
 
@@ -207,13 +207,13 @@ All accounts are created with bcrypt-hashed passwords using salt rounds 10.
 
 | Role | Name | Email | Password |
 |---|---|---|---|
-| **ADMIN** | Alice Admin | `admin@velozity.com` | `Password123!` |
-| **PM** | Sarah Jenkins (PM) | `pm1@velozity.com` | `Password123!` |
-| **PM** | David Chen (PM) | `pm2@velozity.com` | `Password123!` |
-| **DEVELOPER** | Alex Rivera (Dev) | `dev1@velozity.com` | `Password123!` |
-| **DEVELOPER** | Emma Watson (Dev) | `dev2@velozity.com` | `Password123!` |
-| **DEVELOPER** | Liam Patel (Dev) | `dev3@velozity.com` | `Password123!` |
-| **DEVELOPER** | Sophia Kim (Dev) | `dev4@velozity.com` | `Password123!` |
+| **ADMIN** | Alice Admin | `admin@projectpulse.com` | `Password123!` |
+| **PM** | Sarah Jenkins (PM) | `pm1@projectpulse.com` | `Password123!` |
+| **PM** | David Chen (PM) | `pm2@projectpulse.com` | `Password123!` |
+| **DEVELOPER** | Alex Rivera (Dev) | `dev1@projectpulse.com` | `Password123!` |
+| **DEVELOPER** | Emma Watson (Dev) | `dev2@projectpulse.com` | `Password123!` |
+| **DEVELOPER** | Liam Patel (Dev) | `dev3@projectpulse.com` | `Password123!` |
+| **DEVELOPER** | Sophia Kim (Dev) | `dev4@projectpulse.com` | `Password123!` |
 
 ---
 
