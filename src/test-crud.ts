@@ -73,10 +73,15 @@ async function runCrudTests() {
       throw new Error('Search filtering on /api/users failed');
     }
 
-    // Test GET /api/users as PM -> should return 403 FORBIDDEN
+    // Test GET /api/users as PM -> should return 200 OK (PM needs developer list for task assignment)
     const pmUsersRes = await request('/api/users', 'GET', undefined, pm1.token);
-    console.log(`   GET /api/users (PM1): ${pmUsersRes.status} (expected 403)`);
-    if (pmUsersRes.status !== 403) throw new Error('PM was able to access /api/users!');
+    console.log(`   GET /api/users (PM1): ${pmUsersRes.status}, Count: ${pmUsersRes.data.users?.length}`);
+    if (pmUsersRes.status !== 200) throw new Error('PM was unable to access /api/users!');
+
+    // Test GET /api/users as Developer -> should return 403 FORBIDDEN
+    const dev1UsersRes = await request('/api/users', 'GET', undefined, dev1.token);
+    console.log(`   GET /api/users (Dev1): ${dev1UsersRes.status} (expected 403)`);
+    if (dev1UsersRes.status !== 403) throw new Error('Developer was able to access /api/users!');
 
     const clientsRes = await request('/api/clients', 'GET', undefined, admin.token);
     console.log(`   GET /api/clients (Admin): ${clientsRes.status}, Count: ${clientsRes.data.clients?.length}`);
